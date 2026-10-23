@@ -7,7 +7,7 @@ export interface DetectRequest {
   catalog: {
     codeName: string;
     figmaName: string;
-    description: string;
+    css: string;
     note?: string;
     variants: { prop: string; options: string[] }[];
     refImages: { dataUrl: string; variant?: string }[];
@@ -97,7 +97,7 @@ export async function detectLabels(screen: Screen, catalog: CatalogComponent[], 
     .map((c) => ({
       codeName: c.codeName,
       figmaName: c.figmaName,
-      description: c.description,
+      css: c.css,
       note: c.note,
       variants: c.variants,
       refImages: c.refImages.map(({ dataUrl, variant }) => ({ dataUrl, variant })),

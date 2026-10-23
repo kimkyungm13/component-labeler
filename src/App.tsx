@@ -1,14 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import CatalogPage from './CatalogPage';
 import { loadDefaultCatalog, loadStoredCatalog, storeCatalog } from './catalog';
-import { detectLabels } from './detect';
+import { guessScale, matchByCss } from './matcher';
 import Inspector from './Inspector';
 import LabelEditor from './LabelEditor';
 import { buildZip, STATUS_COLOR, STATUS_TEXT } from './render';
 import type { CatalogComponent, Label, Screen } from './types';
 import { downloadBlob, loadImage, uid } from './util';
-
-const PASSWORD_KEY = 'component-labeler.password';
 
 function today() {
   const d = new Date();
@@ -70,6 +68,7 @@ export default function App() {
           mime: f.type,
           width: img.naturalWidth,
           height: img.naturalHeight,
+          scale: guessScale(img.naturalWidth),
           labels: [],
         };
       }),
@@ -99,27 +98,15 @@ export default function App() {
     if (activeId === id) setActiveId(rest[0]?.id ?? null);
   };
 
-  const runDetect = async () => {
+  const runMatch = async () => {
     if (!screen) return;
-    if (screen.labels.length && !confirm('지금 라벨을 AI 결과로 바꿀까요? (기존 라벨은 지워져요)')) return;
-    setBusy('AI가 컴포넌트를 찾는 중… (30초~1분)');
+    if (screen.labels.length && !confirm('지금 라벨을 대조 결과로 바꿀까요? (기존 라벨은 지워져요)')) return;
+    setBusy('소스와 대조하는 중…');
     try {
-      let password = localStorage.getItem(PASSWORD_KEY) ?? '';
-      for (let attempt = 0; attempt < 2; attempt++) {
-        try {
-          const labels = await detectLabels(screen, catalog, password);
-          updateScreen(screen.id, { labels });
-          setSelectedId(null);
-          return;
-        } catch (err) {
-          if (attempt === 0 && err instanceof Error && err.message.includes('비밀번호')) {
-            password = prompt('사이트 비밀번호를 입력하세요') ?? '';
-            localStorage.setItem(PASSWORD_KEY, password);
-            continue;
-          }
-          throw err;
-        }
-      }
+      const labels = await matchByCss(screen.src, screen.width, screen.height, catalog, screen.scale);
+      updateScreen(screen.id, { labels });
+      setSelectedId(null);
+      if (!labels.length) alert('카탈로그 CSS와 맞는 요소를 찾지 못했어요. 배율이 맞는지 확인해 주세요.');
     } catch (err) {
       alert(err instanceof Error ? err.message : String(err));
     } finally {
@@ -294,8 +281,19 @@ export default function App() {
                     <option value="1">100%</option>
                     <option value="2">200%</option>
                   </select>
-                  <button onClick={runDetect} disabled={!!busy}>
-                    AI 자동 라벨
+                  <select
+                    value={screen.scale}
+                    title="시안 배율"
+                    onChange={(e) => updateScreen(screen.id, { scale: Number(e.target.value) })}
+                  >
+                    {[1, 2, 3, 4].map((n) => (
+                      <option key={n} value={n}>
+                        @{n}x{n === guessScale(screen.width) ? ' (자동)' : ''}
+                      </option>
+                    ))}
+                  </select>
+                  <button onClick={runMatch} disabled={!!busy}>
+                    소스 대조로 라벨
                   </button>
                   <button className="primary" onClick={() => runExport([screen])} disabled={!!busy}>
                     이 시안 Export

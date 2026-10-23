@@ -1,7 +1,7 @@
 import type { CatalogComponent, Label, RefImage } from './types';
 import { readAsDataUrl, uid } from './util';
 
-const STORAGE_KEY = 'component-labeler.catalog.v1';
+const STORAGE_KEY = 'component-labeler.catalog.v2';
 
 interface RawVariantEntry {
   refImage?: string;
@@ -11,7 +11,7 @@ interface RawComponent {
   codeName: string;
   figmaName: string;
   importPath?: string;
-  description?: string;
+  css?: string;
   note?: string;
   labelable?: boolean;
   refImages?: string[];
@@ -42,7 +42,7 @@ async function fromRaw(raw: { components: RawComponent[] }, base: string): Promi
         codeName: c.codeName,
         figmaName: c.figmaName,
         importPath: c.importPath ?? '',
-        description: c.description ?? '',
+        css: c.css ?? '',
         note: c.note,
         labelable: c.labelable !== false,
         variants,

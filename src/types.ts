@@ -17,7 +17,8 @@ export interface CatalogComponent {
   codeName: string;
   figmaName: string;
   importPath: string;
-  description: string;
+  /** 피그마 요소에서 뽑은 CSS. 시안 픽셀과 대조하는 기준 */
+  css: string;
   note?: string;
   /** false면 다른 컴포넌트 안에 포함되는 요소라 단독 라벨 대상이 아님 */
   labelable: boolean;
@@ -46,5 +47,7 @@ export interface Screen {
   mime: string;
   width: number;
   height: number;
+  /** 시안 배율 (1x, 2x, 3x) */
+  scale: number;
   labels: Label[];
 }

@@ -13,7 +13,7 @@ const emptyComponent = (): CatalogComponent => ({
   codeName: 'NewComponent',
   figmaName: '',
   importPath: '',
-  description: '',
+  css: '',
   labelable: true,
   variants: [],
   refImages: [],
@@ -115,8 +115,12 @@ export default function CatalogPage({ catalog, onChange, onReset }: Props) {
             <input defaultValue={comp.importPath} placeholder="common_modules/CustomChip" onBlur={(e) => update({ importPath: e.target.value.trim() })} />
           </label>
           <label className="field">
-            <span>생김새 설명 (AI가 비슷한 컴포넌트를 구분할 때 씀)</span>
-            <textarea rows={3} defaultValue={comp.description} onBlur={(e) => update({ description: e.target.value })} />
+            <span>대조용 CSS (피그마 요소에서 뽑은 값, 1x 기준 px)</span>
+            <textarea className="code" rows={10} defaultValue={comp.css} spellCheck={false} onBlur={(e) => update({ css: e.target.value })} />
+            <small className="help">
+              width·height·min-width, background, border, opacity를 대조해요. <code>/* variant=disabled */</code> 아래 선언은 그 variant에만 적용돼요.{' '}
+              <code>--label-above: 28px</code> 위에 붙는 라벨까지 박스에 포함, <code>--row-siblings: 1px solid #색</code> 같은 줄 형제 버튼까지 묶음.
+            </small>
           </label>
           <label className="field">
             <span>variant (한 줄에 하나, 예: variant=active|disabled)</span>

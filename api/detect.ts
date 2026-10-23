@@ -81,7 +81,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       type: 'text',
       text: [
         `### ${c.codeName} (피그마명: ${c.figmaName})`,
-        `생김새: ${c.description}`,
+        `CSS:\n${c.css}`,
         variants && `variant: ${variants}`,
         c.note && `비고: ${c.note}`,
       ]
