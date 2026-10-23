@@ -1,0 +1,49 @@
+{
+  "version": "0.1.0",
+  "note": "공통 컴포넌트 소스가 없어 피그마를 보고 만든 목 카탈로그. 스타일은 피그마와 같고, 코드명은 피그마명과 일부러 다르게 지음.",
+  "figmaFile": "OkKqEmywfr6juk7tVQyx8o",
+  "components": [
+    {
+      "codeName": "CustomToggle",
+      "figmaName": "Switch",
+      "importPath": "components/CustomToggle",
+      "figmaNodes": ["2323:81313", "34487:152926"],
+      "variants": {
+        "variant": {
+          "active": { "figmaNode": "34487:152926", "refImage": "refs/toggle_active.png" },
+          "disabled": { "figmaNode": "2323:81313", "refImage": "refs/toggle_disabled.png" }
+        }
+      },
+      "description": "40x24 알약 모양 스위치. 주황(#fc5603) 트랙, 오른쪽에 흰 원형 핸들. 비활성은 전체 투명도 40%",
+      "propsMap": { "활성": "variant=\"active\"", "비활성": "variant=\"disabled\"" },
+      "note": "꺼짐(checked=false) 상태는 시안에 없어 회색 트랙으로 임시 구현"
+    },
+    {
+      "codeName": "CustomTextInput",
+      "figmaName": "outline",
+      "importPath": "components/CustomTextInput",
+      "figmaNodes": ["2453:22964"],
+      "refImages": ["refs/input_field.png"],
+      "description": "위에 굵은 라벨(필수면 주황 점), 아래 높이 48 흰 입력칸, 회색 1px 테두리, 모서리 8",
+      "propsMap": { "label": "label", "필수 점": "required", "placeholder": "placeholder" }
+    },
+    {
+      "codeName": "CustomChoiceGroup",
+      "figmaName": "toggle",
+      "importPath": "components/CustomChoiceGroup",
+      "figmaNodes": ["5480:30024"],
+      "refImages": ["refs/select_field.png"],
+      "description": "위에 굵은 라벨, 아래 높이 48 버튼이 가로로 균등 분할. 선택된 버튼은 주황 테두리 + 진한 주황 굵은 글씨, 나머지는 회색",
+      "propsMap": { "Selected=true": "value === option.value", "옵션": "options" },
+      "note": "피그마 설명: assistive chip style=outlined, Selected=true/false"
+    },
+    {
+      "codeName": "FieldLabel",
+      "figmaName": "label",
+      "importPath": "components/FieldLabel",
+      "figmaNodes": ["2453:22965", "5480:30025"],
+      "description": "14px 세미볼드 라벨 + 필수일 때 5px 주황 점. 입력폼·선택폼 안에 포함되므로 단독 라벨링은 하지 않음",
+      "labelable": false
+    }
+  ]
+}
