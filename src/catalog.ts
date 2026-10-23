@@ -1,7 +1,7 @@
 import type { CatalogComponent, Label, RefImage } from './types';
 import { readAsDataUrl, uid } from './util';
 
-const STORAGE_KEY = 'component-labeler.catalog.v2';
+const STORAGE_KEY = 'component-labeler.catalog.v3';
 
 interface RawVariantEntry {
   refImage?: string;

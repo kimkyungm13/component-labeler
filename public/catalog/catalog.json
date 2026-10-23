@@ -68,6 +68,22 @@
       "css": "/* 피그마 toggle (5480:30024). 선택된 버튼으로 찾고 같은 줄 버튼까지 묶음 */\nheight: 48px;\nborder: 1px solid #fc5603; /* border/brand (Selected=true) */\nborder-radius: 8px;\n--row-siblings: 1px solid #d0d1d2; /* Selected=false */\n--label-above: 28px;"
     },
     {
+      "codeName": "CustomButton",
+      "figmaName": "filled",
+      "importPath": "components/CustomButton",
+      "figmaNodes": [
+        "5341:41597"
+      ],
+      "refImages": [
+        "refs/button_filled.png"
+      ],
+      "description": "높이 56 주황(#fc5603) 채움 버튼, 모서리 8, 흰 세미볼드 16px 글씨. CTA 영역은 좌우 20 여백에 가로 꽉 참",
+      "css": "/* 피그마 filled (Button group_CTA 5341:41597) */\nheight: 56px;\nmin-width: 80px;\nborder-radius: 8px; /* comp-button/radius-md */\nbackground: #fc5603; /* bg/fill/primary */\npadding: 0 16px; /* comp-button/spacing-xlg */",
+      "propsMap": {
+        "Type=filled": "variant=\"filled\""
+      }
+    },
+    {
       "codeName": "FieldLabel",
       "figmaName": "label",
       "importPath": "components/FieldLabel",
