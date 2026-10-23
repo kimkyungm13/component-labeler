@@ -8,6 +8,8 @@ import { buildZip, STATUS_COLOR, STATUS_TEXT } from './render';
 import type { CatalogComponent, Label, Screen } from './types';
 import { downloadBlob, loadImage, uid } from './util';
 
+const SAMPLE_URL = '/sample/staff.jpg';
+
 function today() {
   const d = new Date();
   return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
@@ -30,6 +32,14 @@ export default function App() {
 
   useEffect(() => {
     if (!loadStoredCatalog()) loadDefaultCatalog().then(setCatalog);
+  }, []);
+
+  // 시연용: 처음 열면 예시 시안을 라벨 없는 상태로 올려 둔다
+  const sampleLoaded = useRef(false);
+  useEffect(() => {
+    if (sampleLoaded.current) return;
+    sampleLoaded.current = true;
+    loadSample();
   }, []);
 
   useEffect(() => {
@@ -78,6 +88,11 @@ export default function App() {
     setActiveId((cur) => cur ?? added[0].id);
     setTab('label');
   };
+
+  async function loadSample() {
+    const blob = await (await fetch(SAMPLE_URL)).blob();
+    await addFiles([new File([blob], '직원관리.jpg', { type: 'image/jpeg' })]);
+  }
 
   const updateScreen = (id: string, patch: Partial<Screen>) =>
     setScreens((prev) => prev.map((s) => (s.id === id ? { ...s, ...patch } : s)));
@@ -314,6 +329,14 @@ export default function App() {
               <div className="dropzone" onClick={() => fileRef.current?.click()}>
                 <b>시안 이미지를 끌어다 놓으세요</b>
                 <span>PNG·JPG, 여러 장 가능. 이미지는 브라우저 안에서만 처리돼요.</span>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    loadSample();
+                  }}
+                >
+                  예시 시안 불러오기
+                </button>
               </div>
             )}
           </main>
